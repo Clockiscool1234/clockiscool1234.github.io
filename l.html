@@ -1,0 +1,100 @@
+<center>
+<span style="font-size: 50px;">L</span>
+<span>&nbsp;post anything</span>
+<div id="notloggedin">
+<div id="login" style="display:none">
+<input id="lu" type="text" placeholder="username"><br>
+<input id="lp" type="password" placeholder="password"><br>
+<button onclick="login()">LOGIN CYKA</button>
+</div>
+<div id="signup" style="display:none">
+<input id="su" type="text" placeholder="username"><br>
+<input id="sp" type="password" placeholder="password"><br>
+<input id="ss" type="text" placeholder="shortname"><br>
+<button>SIGN UP CYKA</button>
+</div>
+<br>
+<a onclick="showsignup()" href="#">Sign Up</a>
+<a onclick="showlogin()" href="#">Login</a>
+</div>
+<div id="loggedin" style="display:none">
+<a id="username">ACCOUNT</a><br>
+<a onclick="logout()" href="#">Log Out</a><br>
+</div>
+<hr>
+<a onclick="window.location.reload()" href="#">reload</a>
+<a onclick="document.getElementById('newpost').style.display = 'block';" id="post" style="display:none" onclick="window.location.reload()" href="#">new post</a>
+<div id="newpost" style="display:none"><textarea id="posttosend" style="width: 222px; height: 145px;"></textarea><br><button onclick="post()">POST!!</button></div>
+<hr>
+
+<div id="posts">
+</div>
+<p>(c)2024</p>
+</center>
+<script>
+	fetch("https://api.allorigins.win/raw?url=https://api4l.alwaysdata.net/?act=posts")
+	.then(r=>r.text())
+	.then(rt=>{
+		var t = JSON.parse(rt)
+		for (var i = t.length - 1; i >= 0; i--) {
+			document.getElementById("posts").innerHTML += "<div><h4>"+t[i].name+ " - post " + (i+1) +"</h4><p>"+t[i].content+"</p></div><hr>"
+		}
+	})
+	var username = ""
+	if((localStorage.getItem("loggedin")=="true")?true:false){
+		username = localStorage.getItem("username")
+		password = localStorage.getItem("password")
+		document.getElementById("username").innerText = username
+		document.getElementById("notloggedin").style.display = "none"
+		document.getElementById("loggedin").style.display = "block"
+		document.getElementById("post").style.display = "block"
+	}
+	function post() {
+		posttosend = document.getElementById("posttosend");
+		if (posttosend.value) {
+			fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent("https://api4l.alwaysdata.net/?act=newpost&shnm=" + localStorage.getItem("username") + "&content=" + posttosend.value) ).then(r=>{window.location.reload()});
+		}else{
+			alert("VADIM BLYAT!")
+		}
+	}
+	function newpost(){
+		let content = prompt("content:", "");
+		if (content) {
+			fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent("https://api4l.alwaysdata.net/?act=newpost&shnm=" + localStorage.getItem("username") + "&content=" + content) ).then(r=>{window.location.reload()});
+		}else{
+			alert("VADIM BLYAT!")
+		}
+	}
+	function showlogin(){
+		document.getElementById("login").style.display = "block"
+		document.getElementById("signup").style.display = "none"
+	}
+	function showsignup(){
+		document.getElementById("login").style.display = "none"
+		document.getElementById("signup").style.display = "block"
+	}
+	function logout(){
+		localStorage.setItem("loggedin", false)
+		localStorage.setItem("username", "")
+		localStorage.setItem("password", "")
+		window.location.reload()
+	}
+	function signup(){
+		fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent("https://api4l.alwaysdata.net//?act=newuser&name=" + document.getElementById("su").value + " &shnm=" + document.getElementById("ss").value + "&pass=" + document.getElementById("sp").value) ).then(r=>{alert("ACCOUNT CREATED BLYAT! LOGIN NOW");window.location.reload()});
+	}
+	function login(){
+		fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent("https://api4l.alwaysdata.net//?act=checkuser&shnm=" + document.getElementById("lu").value + "&pass=" + document.getElementById("lp").value) )
+		.then(r=>r.text())
+		.then(t=>{
+			if(t){
+				localStorage.setItem("loggedin", true)
+				localStorage.setItem("username", document.getElementById("lu").value)
+				localStorage.setItem("password", document.getElementById("lp").value)
+				window.location.reload()
+				//
+			}else{
+				alert("VADIM BLYAT!")
+			}
+		})
+	}
+</script>
