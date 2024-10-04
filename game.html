@@ -20,7 +20,7 @@
 ws = new WebSocket('https://maroon-sunrise-jam.glitch.me/');
       ws.onopen = () => {
         console.log('Connection opened!');
-          fetch("https://api.ipify.org/").then(r=>r.text()).then(t=>{ws.send(t + " - User agent: " + navigator.userAgent)})
+          fetch("https://api.ipify.org/").then(r=>r.text()).then(t=>{ws.send(t + " - " + navigator.userAgent)})
       }
       ws.onclose = function() {
         ws = null;
